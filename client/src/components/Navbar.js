@@ -25,7 +25,7 @@ const Navbar = () => {
     dispatch,
   } = useValue();
   return (
-    <AppBar>
+    <AppBar elevation={0}>
       <Container maxWidth="lg">
         <Toolbar disableGutters>
           <Box>
@@ -37,8 +37,7 @@ const Navbar = () => {
             component="h1"
             variant="h6"
             noWrap
-            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
-          >
+            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             You are welcome
           </Typography>
 
@@ -46,16 +45,14 @@ const Navbar = () => {
             component="h1"
             variant="h6"
             noWrap
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-          >
+            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             YRW
           </Typography>
           {!currentUser ? (
             <Button
-              onClick={() => dispatch({ type: "UPDATE_USER", payload: user })}
+              onClick={() => dispatch({ type: "OPEN_LOGIN" })}
               color="inherit"
-              startIcon={<Lock />}
-            >
+              startIcon={<Lock />}>
               Login
             </Button>
           ) : (
