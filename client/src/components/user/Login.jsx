@@ -1,13 +1,14 @@
 import React,{useRef,useState,useEffect}from 'react'
 import { Button, Dialog, DialogActions,
   Box,
-  createTheme,
-  DialogContent, DialogTitle, IconButton, TextField } from '@mui/material'
+  DialogContent,
+   DialogTitle,
+    IconButton, TextField } from '@mui/material'
 import { Close ,Send} from "@mui/icons-material";
 import { useValue } from '../../context/ContextProvider';
 import PasswordField from "../input/PasswordField"
 import GoogleOneTapLogin from './GoogleOneTapLogin';
-
+import { register,login } from '../../actions/user';
 
 
 const Login = () => {
@@ -29,22 +30,36 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    if(!isRegister) return login({email,password},dispatch);
+  
+    const name = nameRef.current.value;
+    const confirmPassword = confirmPasswordRef.current.value;
+    if(password!==confirmPassword)
+     return dispatch({
+      type:'UPDATE_ALERT',
+      payload:{open:true,severity:'error',
+      message:'Password dont match'}});
+
+      register({name,email,password},dispatch)
+//send register request
 
     //tsting loading
-    dispatch({type:'START_LOADING'});
-    setTimeout(()=>{
-      dispatch({type:'END_LOADING'})
-    },3500)
-    //testing notifcation
-    const password = passwordRef.current.value;
-    const confirmPassword = confirmPasswordRef.current.value;
-    if(password !==confirmPassword){
-      dispatch({type:"UPDATE_ALERT",payload:{
-        open:true,
-        severity:'error',
-        message:'Password don match'
-      }})
-    }
+    // dispatch({type:'START_LOADING'});
+    // setTimeout(()=>{
+    //   dispatch({type:'END_LOADING'})
+    // },3500)
+    // //testing notifcation
+    // const password = passwordRef.current.value;
+    // const confirmPassword = confirmPasswordRef.current.value;
+    // if(password !==confirmPassword){
+    //   dispatch({type:"UPDATE_ALERT",payload:{
+    //     open:true,
+    //     severity:'error',
+    //     message:'Password don match'
+    //   }})
+    // }
   }
 
 
@@ -113,7 +128,7 @@ const Login = () => {
 
             </DialogContent>
             <DialogActions>
-              <Button type='submit' variant='contained' endIcon={<Send/>}>
+              <Button onClick={handleSubmit} type='submit' variant='contained' endIcon={<Send/>}>
                 Submit
               </Button>
             </DialogActions>
