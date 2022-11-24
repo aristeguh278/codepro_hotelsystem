@@ -54,3 +54,12 @@ export const login = tryCatch(async (req, res) => {
     .status(200)
     .json({ success: true, result: { id, name, email: emailLowerCase, photoURL, token } });
 });
+
+export const updateProfile = tryCatch(async (req, res) => {
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, { new: true });
+  const { _id: id, name, photoURL } = updatedUser;
+
+  //todo: update all the rooms records added by this user
+  const token = jwt.sign({ id, name, photoURL }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  res.status(200).json({ success: true, result: { name, photoURL, token } });
+});
